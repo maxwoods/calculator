@@ -51,16 +51,18 @@ var calc = {
                     calc.expression.push(val);
                 }
 
-                calc.updateScreen(calc.expression[calc.expression.length - 1]);
+                calc.updateScreenTotal(calc.expression[calc.expression.length - 1]);
             }
 
             // A function button was pressed
             else {
                 calc.expression.push(val);
-                calc.updateScreen(null);
+                partialExpression = calc.expression.slice(0, -1).join("");
+                calc.updateScreenTotal(eval(partialExpression).toString());
+                calc.updateScreenExpression();
             }
 
-            console.log("pressed: " + calc.expression);
+            console.log("expression: " + calc.expression);
         }
     },
 
@@ -69,20 +71,21 @@ var calc = {
     },
 
     clearScreen: function () {
-        calc.updateScreen("0");
+        calc.updateScreenTotal("0");
     },
 
-    updateScreen: function (contents) {
+    updateScreenTotal: function (contents) {
         var total = document.getElementById("total");
+
+        total.textContent = contents;      
+    },
+
+    updateScreenExpression: function() {
         var expression = document.getElementById("expression");
-
-        if (contents != null) {
-            total.textContent = contents;
-        }
-
         expression.textContent = calc.expression.join(" ");
     },
 
+    // helper function
     lastItemIsNumber: function() {
         lastItem = calc.expression[calc.expression.length - 1];
 
