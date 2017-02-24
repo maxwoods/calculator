@@ -30,6 +30,10 @@ var calc = {
             // CE means clear the display, but don't wipe out the expression
             calc.clearScreen();
 
+            if (calc.lastItemIsNumber()) {
+                calc.expression.pop();
+            }
+
             console.log("entry cleared");
         }
 
