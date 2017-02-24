@@ -10,7 +10,7 @@ var calc = {
         }
     },
 
-    handleButton: function(event) {
+    handleButton: function (event) {
         var val = event.target.getAttribute("data-val");
 
         if (val == "=") {
@@ -21,13 +21,13 @@ var calc = {
         else if (val == "AC") {
             calc.expression = [];
             calc.clearScreen();
-
             console.log("expression cleared");
         }
 
         else if (val == "CE") {
             // CE means clear the display, but don't wipe out the expression
-            calc.clearScreen();
+            calc.clearScreen("0");
+
             console.log("entry cleared");
         }
 
@@ -58,15 +58,23 @@ var calc = {
         }
     },
 
-    evaluate: function(pressed) {
+    evaluate: function (pressed) {
         // todo
     },
 
-    clearScreen: function() {
+    clearScreen: function () {
 
     },
 
-    updateScreen: function(contents) {
+    updateScreen: function (contents) {
+        var total = document.getElementById("total");
+        var expression = document.getElementById("expression");
+
+        if (contents != null) {
+            total.textContent = contents;
+        }
+
+        expression.textContent = calc.expression.join(" ");
     }
 }
 
