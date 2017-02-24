@@ -11,6 +11,8 @@ var calc = {
     },
 
     handleButton: function (event) {
+        // todo: handle float operations
+
         var val = event.target.getAttribute("data-val");
 
         if (val == "=") {
@@ -26,7 +28,7 @@ var calc = {
 
         else if (val == "CE") {
             // CE means clear the display, but don't wipe out the expression
-            calc.clearScreen("0");
+            calc.clearScreen();
 
             console.log("entry cleared");
         }
@@ -63,7 +65,7 @@ var calc = {
     },
 
     clearScreen: function () {
-
+        calc.updateScreen("0");
     },
 
     updateScreen: function (contents) {
