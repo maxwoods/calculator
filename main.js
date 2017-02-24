@@ -15,33 +15,40 @@ var calc = {
 
         var val = event.target.getAttribute("data-val");
 
-        if (val == "=") {
-            calc.evaluate(calc.expression);
-            console.log("equals pressed");
-        }
+        switch (val) {
+            case "=":
+                calc.evaluate(calc.expression);
+                console.log("equals pressed");
+                break;
+            case "AC":
+                calc.expression = [];
+                calc.clearScreen();
+                calc.updateScreenExpression();
+                console.log("expression cleared");
+                break;
+            case "CE":
+                calc.clearScreen();
 
-        else if (val == "AC") {
-            calc.expression = [];
-            calc.clearScreen();
-            calc.updateScreenExpression();
-            console.log("expression cleared");
-        }
+                if (calc.lastItemIsNumber()) {
+                    calc.expression.pop();
+                }
 
-        else if (val == "CE") {
-            // CE means clear the display, but don't wipe out the expression
-            calc.clearScreen();
-
-            if (calc.lastItemIsNumber()) {
-                calc.expression.pop();
-            }
-
-            console.log("entry cleared");
-        }
-
-        else {
-
-            // A number was pressed
-            if (!isNaN(parseInt(val))) {
+                console.log("entry cleared");
+                break;
+            case "sign":
+                // todo
+                break;
+            case "dot":
+                // todo
+                break;
+            case "/": case "x": case "-": case "+":
+                calc.expression.push(val);
+                partialExpression = calc.expression.slice(0, -1).join("");
+                calc.updateScreenTotal(eval(partialExpression).toString());
+                calc.updateScreenExpression();
+                break;
+            default:
+                // Button was number
                 lastButton = calc.expression[calc.expression.length - 1];
 
                 if (calc.lastItemIsNumber()) {
@@ -53,17 +60,7 @@ var calc = {
                 }
 
                 calc.updateScreenTotal(calc.expression[calc.expression.length - 1]);
-            }
-
-            // A function button was pressed
-            else {
-                calc.expression.push(val);
-                partialExpression = calc.expression.slice(0, -1).join("");
-                calc.updateScreenTotal(eval(partialExpression).toString());
-                calc.updateScreenExpression();
-            }
-
-            console.log("expression: " + calc.expression);
+                break;
         }
     },
 
@@ -78,16 +75,16 @@ var calc = {
     updateScreenTotal: function (contents) {
         var total = document.getElementById("total");
 
-        total.textContent = contents;      
+        total.textContent = contents;
     },
 
-    updateScreenExpression: function() {
+    updateScreenExpression: function () {
         var expression = document.getElementById("expression");
         expression.textContent = calc.expression.join(" ");
     },
 
     // helper function
-    lastItemIsNumber: function() {
+    lastItemIsNumber: function () {
         lastItem = calc.expression[calc.expression.length - 1];
 
         if (!isNaN(parseInt(lastItem))) {
