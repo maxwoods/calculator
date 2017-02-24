@@ -39,7 +39,7 @@ var calc = {
             if (!isNaN(parseInt(val))) {
                 lastButton = calc.expression[calc.expression.length - 1];
 
-                if (!isNaN(parseInt(lastButton))) {
+                if (calc.lastItemIsNumber()) {
                     calc.expression[calc.expression.length - 1] = lastButton + val;
                 }
 
@@ -77,6 +77,18 @@ var calc = {
         }
 
         expression.textContent = calc.expression.join(" ");
+    },
+
+    lastItemIsNumber: function() {
+        lastItem = calc.expression[calc.expression.length - 1];
+
+        if (!isNaN(parseInt(lastItem))) {
+            return true;
+        }
+
+        else {
+            return false;
+        }
     }
 }
 
