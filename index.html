@@ -5,6 +5,7 @@
     <title>Javascript Calculator</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
     <link rel="stylesheet" href="style.css">
+    <script src="main.js"></script> 
 </head>
 <body>
     <div id="calculator">
@@ -13,33 +14,33 @@
             <div id="expression">0</div>
         </div>
         <div class="row">
-            <button id="AC" class="button red">AC</button>
-            <button id="CE" class="button red">CE</button>
-            <button id="sign" class="button red">+/-</button>
-            <button id="divide" class="button red">/</button>
+            <button id="AC" class="button red" data-val="AC">AC</button>
+            <button id="CE" class="button red" data-val="CE">CE</button>
+            <button id="sign" class="button red" data-val="sign">+/-</button>
+            <button id="divide" class="button red" data-val="/">/</button>
         </div>
         <div class="row">
             <button id="seven" class="button" data-val="7">7</button>
             <button id="eight" class="button" data-val="8">8</button>
             <button id="nine" class="button" data-val="9">9</button>
-            <button id="multiply" class="button red">X</button>
+            <button id="multiply" class="button red" data-val="X">X</button>
         </div>
         <div class="row">
             <button id="four" class="button" data-val="4">4</button>
             <button id="five" class="button" data-val="5">5</button>
             <button id="six" class="button" data-val="6">6</button>
-            <button id="subtract" class="button red">-</button>
+            <button id="subtract" class="button red" data-val="-">-</button>
         </div>
         <div class="row">
             <button id="one" class="button" data-val="1">1</button>
             <button id="two" class="button" data-val="2">2</button>
             <button id="three" class="button" data-val="3">3</button>
-            <button id="add" class="button red">+</button>
+            <button id="add" class="button red" data-val="+">+</button>
         </div>
         <div class="row"> 
             <button div id="zero" class="button" data-val="0">0</button>
-            <button id="dot" class="button">.</button>
-            <button id="equals" class="button red">=</button>
+            <button id="dot" class="button" data-val=".">.</button>
+            <button id="equals" class="button red" data-val="=">=</button>
         </div>
     </div>
 </body>
