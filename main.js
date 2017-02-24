@@ -23,6 +23,7 @@ var calc = {
         else if (val == "AC") {
             calc.expression = [];
             calc.clearScreen();
+            calc.updateScreenExpression();
             console.log("expression cleared");
         }
 
