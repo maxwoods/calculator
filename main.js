@@ -43,13 +43,13 @@ var calc = {
                 break;
             case "/": case "x": case "-": case "+":
                 calc.expression.push(val);
-                partialExpression = calc.expression.slice(0, -1).join("");
+                var partialExpression = calc.expression.slice(0, -1).join("");
                 calc.updateScreenTotal(eval(partialExpression).toString());
                 calc.updateScreenExpression();
                 break;
             default:
                 // Button was number
-                lastButton = calc.expression[calc.expression.length - 1];
+                var lastButton = calc.expression[calc.expression.length - 1];
 
                 if (calc.lastItemIsNumber()) {
                     calc.expression[calc.expression.length - 1] = lastButton + val;
@@ -85,7 +85,7 @@ var calc = {
 
     // helper function
     lastItemIsNumber: function () {
-        lastItem = calc.expression[calc.expression.length - 1];
+        var lastItem = calc.expression[calc.expression.length - 1];
 
         if (!isNaN(parseInt(lastItem))) {
             return true;
