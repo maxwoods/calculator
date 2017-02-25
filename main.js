@@ -48,34 +48,30 @@ var calc = (function() {
                 updateScreenExpression();
                 break;
             case ".":
-                var lastItem = expression[expression.length - 1];
-                
-                if (lastItemIsNumber()) {
-                    if (lastItem.slice(-1) == ".") {
+                if (isNumber(getLastItem())) {
+                    if (getLastItem().slice(-1) == ".") {
                         break;
                     }
-                    expression[expression.length - 1] = lastItem + ".";
+                    
+                    setLastItem(getLastItem() + ".");
                 }
                 
                 else {
                     expression.push("0.");
                 }
                 
-                updateScreenTotal(expression[expression.length - 1]);
+                updateScreenTotal(getLastItem());
                 break;
             default:
-                // Button was number
-                var lastButton = expression[expression.length - 1];
-
-                if (lastItemIsNumber()) {
-                    expression[expression.length - 1] = lastButton + val;
+                if (isNumber(getLastItem())) {
+                    expression[expression.length - 1] = getLastItem() + val;
                 }
 
                 else {
                     expression.push(val);
                 }
 
-                updateScreenTotal(expression[expression.length - 1]);
+                updateScreenTotal(getLastItem());
                 break;
         }
     };
@@ -145,6 +141,18 @@ var calc = (function() {
         else {
             return false;
         }
+    };
+    
+    var getLastItem = function() {
+        return expression[expression.length - 1];
+    };
+    
+    var setLastItem = function(newValue) {
+        expression[expression.length - 1] = newValue;
+    };
+    
+    var isNumber = function(val) {
+        return !isNaN(parseFloat(val));
     };
 
     var bindFunctions = function() {
