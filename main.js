@@ -3,13 +3,11 @@ var calc = (function() {
     var totalContent = "0";
 
     var handleButton = function(event) {
-        // todo: handle float operations
-
         var val = event.target.getAttribute("data-val");
 
         switch (val) {
             case "=":
-                if (!lastItemIsNumber())
+                if (!isNumber(getLastItem()))
                     break;
                 var total = evaluate(expression);
                 expression = [];
@@ -24,7 +22,7 @@ var calc = (function() {
             case "CE":
                 clearScreen();
 
-                if (lastItemIsNumber()) {
+                if (!isNumber(getLastItem())) {
                     expression.pop();
                 }
 
@@ -42,7 +40,7 @@ var calc = (function() {
             case "+":
                 if (expression.length == 0)
                     break;
-                if (!lastItemIsNumber()) {
+                if (!isNumber(getLastItem())) {
                     expression.splice(-1, 1, val);
                     updateScreenExpression();
                     break;
@@ -136,19 +134,6 @@ var calc = (function() {
         screenExpression.textContent = expression.join(" ");
     };
 
-    // helper function
-    var lastItemIsNumber = function() {
-        var lastItem = expression[expression.length - 1];
-
-        if (!isNaN(parseFloat(lastItem))) {
-            return true;
-        }
-
-        else {
-            return false;
-        }
-    };
-    
     var getLastItem = function() {
         return expression[expression.length - 1];
     };
