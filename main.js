@@ -1,16 +1,8 @@
-var calc = {
-    expression: [],
 
-    run: function () {
-        var buttons = document.getElementsByClassName('button');
-        var expression = "";
-
-        for (var i = 0; i < buttons.length; i++) {
-            buttons[i].addEventListener("click", calc.handleButton);
-        }
-    },
-
-    handleButton: function (event) {
+var calc = (function() {
+    var expression = [];
+    
+    var handleButton = function (event) {
         // todo: handle float operations
 
         var val = event.target.getAttribute("data-val");
@@ -62,29 +54,29 @@ var calc = {
                 calc.updateScreenTotal(calc.expression[calc.expression.length - 1]);
                 break;
         }
-    },
+    };
 
-    evaluate: function (pressed) {
+    var evaluate = function (pressed) {
         // todo
-    },
+    };
 
-    clearScreen: function () {
+    var clearScreen = function () {
         calc.updateScreenTotal("0");
-    },
+    };
 
-    updateScreenTotal: function (contents) {
+    var updateScreenTotal = function (contents) {
         var total = document.getElementById("total");
 
         total.textContent = contents;
-    },
+    };
 
-    updateScreenExpression: function () {
+    var updateScreenExpression = function () {
         var expression = document.getElementById("expression");
         expression.textContent = calc.expression.join(" ");
-    },
+    };
 
     // helper function
-    lastItemIsNumber: function () {
+    var lastItemIsNumber = function () {
         var lastItem = calc.expression[calc.expression.length - 1];
 
         if (!isNaN(parseInt(lastItem))) {
@@ -94,7 +86,23 @@ var calc = {
         else {
             return false;
         }
-    }
-}
+    };
+    
+    var bindFunctions = function () {
+        var buttons = document.getElementsByClassName('button');
 
-document.addEventListener('DOMContentLoaded', calc.run);
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].addEventListener("click", calc.handleButton);
+        }
+    };
+    
+    var init = function() {
+        bindFunctions();
+    };
+    
+    return {
+        init: init,
+    };
+})();
+
+document.addEventListener('DOMContentLoaded', calc.init);
