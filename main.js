@@ -66,7 +66,7 @@ var calc = (function() {
 
     var evaluate = function(expression) {
         return expression.map(function(elem) {
-                return parseInt(elem) || elem;
+                return parseFloat(elem) || elem;
             })
             .reduce(function(result, current, idx, arr) {
                 if (!isNaN(current)) {
@@ -122,7 +122,7 @@ var calc = (function() {
     var lastItemIsNumber = function() {
         var lastItem = expression[expression.length - 1];
 
-        if (!isNaN(parseInt(lastItem))) {
+        if (!isNaN(parseFloat(lastItem))) {
             return true;
         }
 
