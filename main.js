@@ -30,7 +30,11 @@ var calc = (function() {
 
                 break;
             case "sign":
-                // todo
+                if (isNumber(getLastItem()) && expression.length != 0) {
+                    setLastItem("-" + getLastItem());
+                    updateScreenTotal(getLastItem());
+                    updateScreenExpression();
+                }
                 break;
             case "/":
             case "x":
