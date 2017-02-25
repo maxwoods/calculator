@@ -12,8 +12,8 @@ var calc = (function() {
                 if (!lastItemIsNumber())
                     break;
                 var total = evaluate(expression);
+                expression = [];
                 updateScreenTotal(total);
-                expression = [total];
                 updateScreenExpression();
                 break;
             case "AC":
@@ -36,6 +36,8 @@ var calc = (function() {
             case "x":
             case "-":
             case "+":
+                if (expression.length == 0)
+                    break;
                 if (!lastItemIsNumber()) {
                     expression.splice(-1, 1, val);
                     updateScreenExpression();
@@ -64,7 +66,7 @@ var calc = (function() {
                 break;
             default:
                 if (isNumber(getLastItem())) {
-                    expression[expression.length - 1] = getLastItem() + val;
+                    setLastItem(getLastItem() + val);
                 }
 
                 else {
