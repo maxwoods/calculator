@@ -30,9 +30,6 @@ var calc = (function() {
             case "sign":
                 // todo
                 break;
-            case "dot":
-                // todo
-                break;
             case "/":
             case "x":
             case "-":
@@ -42,10 +39,27 @@ var calc = (function() {
                     updateScreenExpression();
                     break;
                 }
+                
                 expression.push(val);
                 var partialExpression = expression.slice(0, -1);
                 updateScreenTotal(evaluate(partialExpression));
                 updateScreenExpression();
+                break;
+            case ".":
+                var lastItem = expression[expression.length - 1];
+                
+                if (lastItemIsNumber()) {
+                    if (lastItem.slice(-1) == ".") {
+                        break;
+                    }
+                    expression[expression.length - 1] = lastItem + ".";
+                }
+                
+                else {
+                    expression.push("0.");
+                }
+                
+                updateScreenTotal(expression[expression.length - 1]);
                 break;
             default:
                 // Button was number
