@@ -1,6 +1,7 @@
 
 var calc = (function() {
     var expression = [];
+    var screenContents = "0";
     
     var handleButton = function (event) {
         // todo: handle float operations
