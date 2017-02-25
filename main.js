@@ -9,20 +9,20 @@ var calc = (function() {
 
         switch (val) {
             case "=":
-                calc.evaluate(calc.expression);
+                evaluate(calc.expression);
                 console.log("equals pressed");
                 break;
             case "AC":
-                calc.expression = [];
-                calc.clearScreen();
-                calc.updateScreenExpression();
+                expression = [];
+                clearScreen();
+                updateScreenExpression();
                 console.log("expression cleared");
                 break;
             case "CE":
-                calc.clearScreen();
+                clearScreen();
 
-                if (calc.lastItemIsNumber()) {
-                    calc.expression.pop();
+                if (lastItemIsNumber()) {
+                    expression.pop();
                 }
 
                 console.log("entry cleared");
@@ -34,24 +34,24 @@ var calc = (function() {
                 // todo
                 break;
             case "/": case "x": case "-": case "+":
-                calc.expression.push(val);
-                var partialExpression = calc.expression.slice(0, -1).join("");
-                calc.updateScreenTotal(eval(partialExpression).toString());
-                calc.updateScreenExpression();
+                expression.push(val);
+                var partialExpression = expression.slice(0, -1).join("");
+                updateScreenTotal(eval(partialExpression).toString());
+                updateScreenExpression();
                 break;
             default:
                 // Button was number
-                var lastButton = calc.expression[calc.expression.length - 1];
+                var lastButton = expression[expression.length - 1];
 
-                if (calc.lastItemIsNumber()) {
-                    calc.expression[calc.expression.length - 1] = lastButton + val;
+                if (lastItemIsNumber()) {
+                    expression[expression.length - 1] = lastButton + val;
                 }
 
                 else {
-                    calc.expression.push(val);
+                    expression.push(val);
                 }
 
-                calc.updateScreenTotal(calc.expression[calc.expression.length - 1]);
+                updateScreenTotal(expression[expression.length - 1]);
                 break;
         }
     };
@@ -61,7 +61,7 @@ var calc = (function() {
     };
 
     var clearScreen = function () {
-        calc.updateScreenTotal("0");
+        updateScreenTotal("0");
     };
 
     var updateScreenTotal = function (contents) {
@@ -71,13 +71,13 @@ var calc = (function() {
     };
 
     var updateScreenExpression = function () {
-        var expression = document.getElementById("expression");
-        expression.textContent = calc.expression.join(" ");
+        var screenExpression = document.getElementById("expression");
+        screenExpression.textContent = expression.join(" ");
     };
 
     // helper function
     var lastItemIsNumber = function () {
-        var lastItem = calc.expression[calc.expression.length - 1];
+        var lastItem = expression[expression.length - 1];
 
         if (!isNaN(parseInt(lastItem))) {
             return true;
@@ -92,7 +92,7 @@ var calc = (function() {
         var buttons = document.getElementsByClassName('button');
 
         for (var i = 0; i < buttons.length; i++) {
-            buttons[i].addEventListener("click", calc.handleButton);
+            buttons[i].addEventListener("click", handleButton);
         }
     };
     
