@@ -1,23 +1,23 @@
-
 var calc = (function() {
     var expression = [];
-    var screenContents = "0";
-    
-    var handleButton = function (event) {
+    var totalContent = "0";
+
+    var handleButton = function(event) {
         // todo: handle float operations
 
         var val = event.target.getAttribute("data-val");
 
         switch (val) {
             case "=":
-                evaluate(calc.expression);
-                console.log("equals pressed");
+                var total = evaluate(expression);
+                updateScreenTotal(total);
+                expression = [total];
+                updateScreenExpression();
                 break;
             case "AC":
                 expression = [];
                 clearScreen();
                 updateScreenExpression();
-                console.log("expression cleared");
                 break;
             case "CE":
                 clearScreen();
@@ -26,7 +26,6 @@ var calc = (function() {
                     expression.pop();
                 }
 
-                console.log("entry cleared");
                 break;
             case "sign":
                 // todo
@@ -34,10 +33,18 @@ var calc = (function() {
             case "dot":
                 // todo
                 break;
-            case "/": case "x": case "-": case "+":
+            case "/":
+            case "x":
+            case "-":
+            case "+":
+                if (!lastItemIsNumber()) {
+                    expression.splice(-1, 1, val);
+                    updateScreenExpression();
+                    break;
+                }
                 expression.push(val);
-                var partialExpression = expression.slice(0, -1).join("");
-                updateScreenTotal(eval(partialExpression).toString());
+                var partialExpression = expression.slice(0, -1);
+                updateScreenTotal(evaluate(partialExpression));
                 updateScreenExpression();
                 break;
             default:
@@ -57,27 +64,62 @@ var calc = (function() {
         }
     };
 
-    var evaluate = function (pressed) {
-        // todo
-    };
+    var evaluate = function(expression) {
+        return expression.map(function(elem) {
+                return parseInt(elem) || elem;
+            })
+            .reduce(function(result, current, idx, arr) {
+                if (!isNaN(current)) {
+                    if (idx != 0) {
+                        switch (arr[idx - 1]) {
+                            case "+":
+                                result += current;
+                                break;
+                            case "-":
+                                result -= current;
+                                break;
+                            case "/":
+                                result /= current;
+                                break;
+                            case "x":
+                                result *= current;
+                                break;
+                        }
+                        
+                    return result;
+                    }
+                    
+                    else {
+                        return current;
+                    }
+                }
+                else if (idx == arr.length - 1) {
+                    return undefined;
+                }
+                else
+                    return result;
+            }, 0);
+    }
 
-    var clearScreen = function () {
+    var clearScreen = function() {
         updateScreenTotal("0");
     };
 
-    var updateScreenTotal = function (contents) {
+    var updateScreenTotal = function(contents) {
         var total = document.getElementById("total");
 
         total.textContent = contents;
+
+        totalContent = contents;
     };
 
-    var updateScreenExpression = function () {
+    var updateScreenExpression = function() {
         var screenExpression = document.getElementById("expression");
         screenExpression.textContent = expression.join(" ");
     };
 
     // helper function
-    var lastItemIsNumber = function () {
+    var lastItemIsNumber = function() {
         var lastItem = expression[expression.length - 1];
 
         if (!isNaN(parseInt(lastItem))) {
@@ -88,19 +130,19 @@ var calc = (function() {
             return false;
         }
     };
-    
-    var bindFunctions = function () {
+
+    var bindFunctions = function() {
         var buttons = document.getElementsByClassName('button');
 
         for (var i = 0; i < buttons.length; i++) {
             buttons[i].addEventListener("click", handleButton);
         }
     };
-    
+
     var init = function() {
         bindFunctions();
     };
-    
+
     return {
         init: init,
     };
