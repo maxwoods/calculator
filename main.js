@@ -9,6 +9,8 @@ var calc = (function() {
 
         switch (val) {
             case "=":
+                if (!lastItemIsNumber())
+                    break;
                 var total = evaluate(expression);
                 updateScreenTotal(total);
                 expression = [total];
