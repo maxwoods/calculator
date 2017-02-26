@@ -56,8 +56,9 @@ var calc = (function() {
                 updateScreenExpression();
                 break;
             case ".":
+                // If there's already a decimal poing in this number, break
                 if (isNumber(getLastItem())) {
-                    if (getLastItem().slice(-1) == ".") {
+                    if (getLastItem().search(/\./) != -1) {
                         break;
                     }
                     
@@ -132,7 +133,6 @@ var calc = (function() {
         var arr = [];
         
         if (contents.length > 8) {
-            console.log("digit limit reached");
             digitLimitError();
             return;
         }
@@ -191,7 +191,6 @@ var calc = (function() {
     };
     
     var digitLimitError = function() {
-        console.log("running...");
         var error = document.getElementById('error');
         
         clearScreen();
