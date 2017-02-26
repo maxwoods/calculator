@@ -26,9 +26,7 @@ var calc = (function() {
             case "CE":
                 clearScreen();
 
-                if (!isNumber(getLastItem())) {
-                    expression.pop();
-                }
+                expression.pop();
 
                 break;
             case "sign":
