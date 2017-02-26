@@ -40,7 +40,6 @@ var calc = (function() {
                     }
                     
                     updateScreenTotal(getLastItem());
-                    updateScreenExpression();
                 }
                 break;
             case "/":
