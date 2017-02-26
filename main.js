@@ -32,7 +32,13 @@ var calc = (function() {
                 break;
             case "sign":
                 if (isNumber(getLastItem()) && expression.length != 0) {
-                    setLastItem("-" + getLastItem());
+                    if (getLastItem()[0] == "-") {
+                        setLastItem(getLastItem().slice(1));
+                    }
+                    else {
+                        setLastItem("-" + getLastItem());
+                    }
+                    
                     updateScreenTotal(getLastItem());
                     updateScreenExpression();
                 }
