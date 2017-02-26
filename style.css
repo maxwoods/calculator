@@ -11,6 +11,7 @@
 
 #screen {
     background-color: rgb(52, 73, 94);
+    font-family: 'Droid Sans Mono', monospace;
     color: white;
     height: 65px;
     margin: 5px;
