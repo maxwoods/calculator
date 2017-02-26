@@ -1,7 +1,8 @@
 var calc = (function() {
+    // Array of strings representing the current math expression
     var expression = [];
-    var totalContent = "0";
-
+   
+    // Button event handler 
     var handleButton = function(event) {
         var val = event.target.getAttribute("data-val");
         
@@ -85,6 +86,11 @@ var calc = (function() {
         }
     };
 
+    /* Evaluates the expression array
+       Returns a number for a valid expression
+       Returns undefined if the expression isn't valid or complete
+       Current implementation ignores order of operations
+    */
     var evaluate = function(expression) {
         return expression.map(function(elem) {
                 return parseFloat(elem) || elem;
@@ -122,10 +128,8 @@ var calc = (function() {
                     return result;
             }, 0);
     }
-
-    var clearScreen = function() {
-        updateScreenTotal("0");
-    };
+    
+    // Screen update functions
 
     var updateScreenTotal = function(contents) {
         var total = document.getElementById("total");
@@ -164,6 +168,13 @@ var calc = (function() {
         
         screenExpression.innerHTML = chars.join("");
     };
+    
+    
+    // Misc. helper functions
+    
+    var clearScreen = function() {
+        updateScreenTotal("0");
+    };
 
     var getLastItem = function() {
         return expression[expression.length - 1];
@@ -175,18 +186,6 @@ var calc = (function() {
     
     var isNumber = function(val) {
         return !isNaN(parseFloat(val));
-    };
-
-    var bindFunctions = function() {
-        var buttons = document.getElementsByClassName('button');
-
-        for (var i = 0; i < buttons.length; i++) {
-            buttons[i].addEventListener("click", handleButton);
-        }
-    };
-
-    var init = function() {
-        bindFunctions();
     };
     
     var digitLimitError = function() {
@@ -201,7 +200,21 @@ var calc = (function() {
         var error = document.getElementById('error');
         error.textContent = "";
     }
+    
+    // Binding and init functions
+    
+    var bindFunctions = function() {
+        var buttons = document.getElementsByClassName('button');
 
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].addEventListener("click", handleButton);
+        }
+    };
+
+    var init = function() {
+        bindFunctions();
+    };
+    
     return {
         init: init,
     };
