@@ -138,7 +138,8 @@ var calc = (function() {
             }, 0);
     }
     
-    // Screen update functions
+    /* Screen update functions. Each expression element is wrapped in
+    a span to accommodate fixed-width digits on the screen */
 
     var updateScreenTotal = function(contents) {
         var total = document.getElementById("total");
