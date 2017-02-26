@@ -109,7 +109,8 @@ var calc = (function() {
                                 break;
                         }
                         
-                    return result;
+                        //round to nearest hundredth 
+                        return Math.round(result*100)/100;
                     }
                     
                     else {
