@@ -4,6 +4,10 @@ var calc = (function() {
 
     var handleButton = function(event) {
         var val = event.target.getAttribute("data-val");
+        
+        if (expression.length == 0) {
+            clearError();
+        }
 
         switch (val) {
             case "=":
@@ -68,6 +72,8 @@ var calc = (function() {
                 break;
             default:
                 if (isNumber(getLastItem())) {
+                    if (getLastItem().length == 8)
+                        break;
                     setLastItem(getLastItem() + val);
                 }
 
@@ -125,13 +131,17 @@ var calc = (function() {
         var total = document.getElementById("total");
         var arr = [];
         
+        if (contents.length > 8) {
+            console.log("digit limit reached");
+            digitLimitError();
+            return;
+        }
+        
         for (var i = 0; i < contents.length; i++) {
             arr.push("<span class='char'>", contents[i], "</span>");
         }
         
-        total.innerHTML = arr.join("");
-        
-        return;
+        total.innerHTML = arr.join(""); 
     };
 
     var updateScreenExpression = function() {
@@ -179,6 +189,20 @@ var calc = (function() {
     var init = function() {
         bindFunctions();
     };
+    
+    var digitLimitError = function() {
+        console.log("running...");
+        var error = document.getElementById('error');
+        
+        clearScreen();
+        expression = [];
+        error.textContent = "DIGIT LIMIT REACHED";
+    }
+    
+    var clearError = function() {
+        var error = document.getElementById('error');
+        error.textContent = "";
+    }
 
     return {
         init: init,
