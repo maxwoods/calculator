@@ -11,7 +11,7 @@ var calc = (function() {
                     break;
                 var total = evaluate(expression);
                 expression = [];
-                updateScreenTotal(total);
+                updateScreenTotal(total.toString());
                 updateScreenExpression();
                 break;
             case "AC":
@@ -48,7 +48,7 @@ var calc = (function() {
                 
                 expression.push(val);
                 var partialExpression = expression.slice(0, -1);
-                updateScreenTotal(evaluate(partialExpression));
+                updateScreenTotal(evaluate(partialExpression).toString());
                 updateScreenExpression();
                 break;
             case ".":
@@ -123,15 +123,37 @@ var calc = (function() {
 
     var updateScreenTotal = function(contents) {
         var total = document.getElementById("total");
-
-        total.textContent = contents;
-
-        totalContent = contents;
+        var arr = [];
+        
+        for (var i = 0; i < contents.length; i++) {
+            arr.push("<span class='char'>", contents[i], "</span>");
+        }
+        
+        total.innerHTML = arr.join("");
+        
+        return;
     };
 
     var updateScreenExpression = function() {
-        var screenExpression = document.getElementById("expression");
-        screenExpression.textContent = expression.join(" ");
+        var arr = [];
+        
+        var screenExpression = document.getElementById('expression');
+        
+        var chars = expression.reduce(function(acc, cur) {
+            acc.push("<span>");
+            if (cur.length == 1) {
+                acc.push(" ", cur, " ");
+                acc.push("</span>");
+                return acc;
+            }
+            else {
+                acc = acc.concat(cur.split(""));
+                acc.push("</span>");
+                return acc;
+            }
+        }, []);
+        
+        screenExpression.innerHTML = chars.join("");
     };
 
     var getLastItem = function() {
