@@ -43,6 +43,10 @@ var calc = (function() {
             case "+":
                 if (expression.length == 0)
                     break;
+                /*
+                If the last element of the expression is an operator,
+                replace with new operator
+                */
                 if (!isNumber(getLastItem())) {
                     expression.splice(-1, 1, val);
                     updateScreenExpression();
