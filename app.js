@@ -1,16 +1,17 @@
 var calc = (function() {
     var history = []; // History of commands/values entered
-    var current = ""; // Current value displayed on the screen
+    var current = "0"; // Current value displayed on the screen
 
     // pseudo-enumeration to represent various states of the calculator
     var calcStates = {
+        INIT: "Init",
         EQUALS_PRESSED: "Equals Pressed",
         FUNCTION_PRESSED: "Function Pressed",
         NUMBER_ENTRY_REG: "Number Entry Regular",
         NUMBER_ENTRY_DECIMAL: "Number Entry Decimal"
     }
 
-    var calcState = calcStates.NUMBER_ENTRY_REG; // start out in number entry mode
+    var calcState = calcStates.INIT; // start out in number entry mode
 
 
     var handleButton = function(event) {
@@ -20,6 +21,11 @@ var calc = (function() {
             case "=":
                 break;
             case "AC":
+                history = [];
+                current = "0";
+                calcState = calcStates.INIT;
+                renderHistory();
+                renderTotal();
                 break;
             case "CE":
                 break;
@@ -32,12 +38,12 @@ var calc = (function() {
                 if (calcState == calcStates.NUMBER_ENTRY_REG) {
                         history.push(current);
                         history.push(val);
-                        current = "";
                     }
                 
                 else if (calcState == calcStates.NUMBER_ENTRY_DECIMAL) {
                     if (current.slice(-1) == ".") {
                         current = current + "0";
+                        renderTotal();
                     }
                     
                     history.push(current);
@@ -57,7 +63,7 @@ var calc = (function() {
                 if (calcState == calcStates.NUMBER_ENTRY_DECIMAL)
                     break;
                 // If no number entered, assume "0.0"
-                else if (current.length == 0) {
+                else if (current == "0") {
                     calcState = calcStates.NUMBER_ENTRY_DECIMAL;
                     current = "0.";
                 }
@@ -75,7 +81,8 @@ var calc = (function() {
                     calcState == calcStates.NUMBER_ENTRY_DECIMAL) {
                         current = current + val;
                     }
-                else if (calcState == calcStates.FUNCTION_PRESSED) {
+                else if (calcState == calcStates.FUNCTION_PRESSED || 
+                         calcState == calcStates.INIT) {
                     current = val;
                     calcState = calcStates.NUMBER_ENTRY_REG;
                 }
