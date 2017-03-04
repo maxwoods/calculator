@@ -28,6 +28,9 @@ var calc = (function() {
                 renderTotal();
                 break;
             case "CE":
+                current = "0";
+                calcState = calcStates.FUNCTION_PRESSED;
+                renderTotal();
                 break;
             case "sign":
                 break;
@@ -35,27 +38,26 @@ var calc = (function() {
             case "x":
             case "-":
             case "+":
-                if (calcState == calcStates.NUMBER_ENTRY_REG) {
-                        history.push(current);
-                        history.push(val);
-                    }
-                
-                else if (calcState == calcStates.NUMBER_ENTRY_DECIMAL) {
+                if (calcState == calcStates.NUMBER_ENTRY_REG ||
+                    calcState == calcStates.NUMBER_ENTRY_DECIMAL) {
                     if (current.slice(-1) == ".") {
                         current = current + "0";
-                        renderTotal();
                     }
-                    
+
                     history.push(current);
                     history.push(val);
+
+                    current = evaluate(history.slice(0, -1));
                 }
-                
+
                 // Change operator if last button was a function
                 else if (calcState == calcStates.FUNCTION_PRESSED) {
                     history.splice(-1, 1, val);
                 }
-                
+
                 calcState = calcStates.FUNCTION_PRESSED;
+
+                renderTotal();
                 renderHistory();
                 break;
             case ".":
@@ -71,7 +73,7 @@ var calc = (function() {
                     calcState = calcStates.NUMBER_ENTRY_DECIMAL;
                     current = current + ".";
                 }
-                
+
                 renderTotal();
                 break;
             default:
@@ -79,14 +81,14 @@ var calc = (function() {
                     break;
                 else if (calcState == calcStates.NUMBER_ENTRY_REG ||
                     calcState == calcStates.NUMBER_ENTRY_DECIMAL) {
-                        current = current + val;
-                    }
-                else if (calcState == calcStates.FUNCTION_PRESSED || 
-                         calcState == calcStates.INIT) {
+                    current = current + val;
+                }
+                else if (calcState == calcStates.FUNCTION_PRESSED ||
+                    calcState == calcStates.INIT) {
                     current = val;
                     calcState = calcStates.NUMBER_ENTRY_REG;
                 }
-                
+
                 renderTotal();
                 break;
         }
@@ -129,23 +131,23 @@ var calc = (function() {
                     return result;
             }, 0);
     };
-    
+
     var renderTotal = function() {
-      var totalDiv = document.getElementById("total");
-      
-      totalDiv.innerHTML = current;
-      
-      console.log("Updating with current: " + current);
+        var totalDiv = document.getElementById("total");
+
+        totalDiv.innerHTML = current;
+
+        console.log("Updating with current: " + current);
     };
-    
+
     var renderHistory = function() {
         var historyDiv = document.getElementById("history");
-        
+
         console.log("updating + " + historyDiv + " with " + history);
-        
+
         historyDiv.innerHTML = history.join(' ');
     }
-    
+
     // Utility function to check if a given string is a number
     var isNumber = function(string) {
         return !isNaN(parseFloat(string));
