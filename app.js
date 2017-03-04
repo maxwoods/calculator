@@ -33,9 +33,10 @@ var calc = (function() {
             case ".":
                 break;
             default:
+                if (current.length == 8) // digit limit
+                    break;
                 if (calcState == calcStates.NUMBER_ENTRY_REG ||
                     calcState == calcStates.NUMBER_ENTRY_DECIMAL) {
-                        console.log("setting current");
                         current = current + val;
                     }
                 
