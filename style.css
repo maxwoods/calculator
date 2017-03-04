@@ -1,3 +1,5 @@
+/* General styles */
+
 * {
     box-sizing: border-box;
 }
@@ -9,10 +11,13 @@
     width: 240px;
 }
 
+
+/* Screen styles */
+
 #screen {
     background-color: rgb(52, 73, 94);
-    font-family: sans-serif;
     color: white;
+    font-family: sans-serif;
     height: 65px;
     margin: 5px;
     padding: 0 5px 0 5px;
@@ -22,20 +27,21 @@
 
 #total {
     font-size: 46px;
-    white-space: nowrap;
     overflow: hidden;
+    white-space: nowrap;
 }
 
 #history {
     font-size: 10px;
-    white-space: nowrap;
     overflow: hidden;
+    white-space: nowrap;
 }
 
 #error {
     font-size: 10px;
 }
 
+/* Button Styles */
 
 .button {
     background-color: rgb(52, 73, 94);
@@ -50,10 +56,10 @@
 }
 
 
-#zero {
-    width: 110px;
-}
-
 .red {
     background-color: red;
+}
+
+#zero {
+    width: 110px;
 }
