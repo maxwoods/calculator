@@ -174,11 +174,6 @@ var calc = (function() {
         historyDiv.innerHTML = history.join(' ');
     }
 
-    // Utility function to check if a given string is a number
-    var isNumber = function(string) {
-        return !isNaN(parseFloat(string));
-    }
-
     var init = function() {
         var buttons = document.getElementsByClassName('button');
 
