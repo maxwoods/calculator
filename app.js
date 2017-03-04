@@ -30,7 +30,6 @@ var calc = (function() {
                     }
                 
                 else {
-                    console.log("running this");
                     history.push(current);
                     current = evaluate(history).toString();
                     history = [];
@@ -89,11 +88,12 @@ var calc = (function() {
                 break;
             case ".":
                 // Only one decimal point in current entry
-                if (current.indexOf('.') != -1)
+                if (current.indexOf('.') != -1 && (calcState == calcStates.NUMBER_ENTRY))
                     break;
                     
                 // If no number entered, assume "0.0"
-                else if (calcState == calcStates.FUNCTION_PRESSED) {
+                else if (calcState == calcStates.FUNCTION_PRESSED || 
+                         calcState == calcStates.EQUALS_PRESSED) {
                     current = "0.";
                 }
                 
@@ -135,7 +135,6 @@ var calc = (function() {
     expression and returns the result. This implementation ignores
     order of operations */
     var evaluate = function(expression) {
-        console.log("evaluating " + expression);
         return expression.map(function(elem) {
                 var parsed = parseFloat(elem);
                 return isNaN(parsed) ? elem : parsed;
@@ -158,7 +157,6 @@ var calc = (function() {
                                 break;
                         }
                         
-                        console.log("result is " + result);
                         //round to nearest hundredth 
                         return Math.round(result * 100) / 100;
                     }
@@ -180,13 +178,10 @@ var calc = (function() {
 
         totalDiv.innerHTML = current;
 
-        console.log("Updating with current: " + current);
     };
 
     var renderHistory = function() {
         var historyDiv = document.getElementById("history");
-
-        console.log("updating + " + historyDiv + " with " + history);
 
         historyDiv.innerHTML = history.join(' ');
     }
