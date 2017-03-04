@@ -24,13 +24,10 @@ var calc = (function() {
                 history = [];
                 current = "0";
                 calcState = calcStates.INIT;
-                renderHistory();
-                renderTotal();
                 break;
             case "CE":
                 current = "0";
                 calcState = calcStates.FUNCTION_PRESSED;
-                renderTotal();
                 break;
             case "sign":
                 if (calcState == calcStates.NUMBER_ENTRY_REG || 
@@ -42,7 +39,6 @@ var calc = (function() {
                             current = "-" + current;
                         }
                     }
-                renderTotal();
                 break;
             case "/":
             case "x":
@@ -67,8 +63,6 @@ var calc = (function() {
 
                 calcState = calcStates.FUNCTION_PRESSED;
 
-                renderTotal();
-                renderHistory();
                 break;
             case ".":
                 // Only one decimal point in current entry
@@ -84,7 +78,6 @@ var calc = (function() {
                     current = current + ".";
                 }
 
-                renderTotal();
                 break;
             default:
                 if (current.length == 8) // digit limit
@@ -99,9 +92,11 @@ var calc = (function() {
                     calcState = calcStates.NUMBER_ENTRY_REG;
                 }
 
-                renderTotal();
                 break;
         }
+        
+        renderTotal();
+        renderHistory();
     };
 
     var evaluate = function(expression) {
