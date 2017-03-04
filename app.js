@@ -7,9 +7,8 @@ var calc = (function() {
         INIT: "Init",
         EQUALS_PRESSED: "Equals Pressed",
         FUNCTION_PRESSED: "Function Pressed",
-        NUMBER_ENTRY_REG: "Number Entry Regular",
-        NUMBER_ENTRY_DECIMAL: "Number Entry Decimal"
-    }
+        NUMBER_ENTRY: "Number Entry"
+    };
 
     var calcState = calcStates.INIT; // start out in number entry mode
 
@@ -30,8 +29,7 @@ var calc = (function() {
                 calcState = calcStates.FUNCTION_PRESSED;
                 break;
             case "sign":
-                if (calcState == calcStates.NUMBER_ENTRY_REG || 
-                    calcState == calcStates.NUMBER_ENTRY_DECIMAL) {
+                if (calcState == calcStates.NUMBER_ENTRY) {
                         if (current[0] == "-") {
                             current = current.slice(1);
                         }
@@ -44,8 +42,7 @@ var calc = (function() {
             case "x":
             case "-":
             case "+":
-                if (calcState == calcStates.NUMBER_ENTRY_REG ||
-                    calcState == calcStates.NUMBER_ENTRY_DECIMAL) {
+                if (calcState == calcStates.NUMBER_ENTRY) {
                     if (current.slice(-1) == ".") {
                         current = current + "0";
                     }
@@ -53,7 +50,7 @@ var calc = (function() {
                     history.push(current);
                     history.push(val);
 
-                    current = evaluate(history.slice(0, -1));
+                    current = evaluate(history.slice(0, -1)).toString();
                 }
 
                 // Change operator if last button was a function
@@ -66,30 +63,31 @@ var calc = (function() {
                 break;
             case ".":
                 // Only one decimal point in current entry
-                if (calcState == calcStates.NUMBER_ENTRY_DECIMAL)
+                if (current.indexOf('.') != -1)
                     break;
+                    
                 // If no number entered, assume "0.0"
-                else if (current == "0") {
-                    calcState = calcStates.NUMBER_ENTRY_DECIMAL;
+                else if (calcState == calcStates.FUNCTION_PRESSED) {
                     current = "0.";
+                    console.log("HERE");
                 }
+                
                 else {
-                    calcState = calcStates.NUMBER_ENTRY_DECIMAL;
                     current = current + ".";
                 }
-
+                
+                calcState = calcStates.NUMBER_ENTRY;
                 break;
             default:
                 if (current.length == 8) // digit limit
                     break;
-                else if (calcState == calcStates.NUMBER_ENTRY_REG ||
-                    calcState == calcStates.NUMBER_ENTRY_DECIMAL) {
+                else if (calcState == calcStates.NUMBER_ENTRY) {
                     current = current + val;
                 }
                 else if (calcState == calcStates.FUNCTION_PRESSED ||
                     calcState == calcStates.INIT) {
                     current = val;
-                    calcState = calcStates.NUMBER_ENTRY_REG;
+                    calcState = calcStates.NUMBER_ENTRY;
                 }
 
                 break;
