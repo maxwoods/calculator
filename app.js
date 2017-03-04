@@ -4,14 +4,13 @@ var calc = (function() {
 
     // pseudo-enumeration to represent various states of the calculator
     var calcStates = {
-        INIT: "Init",
         EQUALS_PRESSED: "Equals Pressed",
         FUNCTION_PRESSED: "Function Pressed",
         NUMBER_ENTRY: "Number Entry",
         ERROR: "Error"
     };
 
-    var calcState = calcStates.INIT; // start out in number entry mode
+    var calcState = calcStates.NUMBER_ENTRY; // start out in number entry mode
 
 
     var handleButton = function(event) {
@@ -19,7 +18,7 @@ var calc = (function() {
         
         if (calcState == calcStates.ERROR) {
             clearError();
-            calcState = calcStates.INIT;
+            calcState = calcStates.NUMBER_ENTRY;
         }
         
         switch (val) {
@@ -41,7 +40,7 @@ var calc = (function() {
             case "AC":
                 history = [];
                 current = "0";
-                calcState = calcStates.INIT;
+                calcState = calcStates.NUMBER_ENTRY;
                 break;
             case "CE":
                 current = "0";
@@ -107,10 +106,14 @@ var calc = (function() {
                 if (calcState == calcStates.NUMBER_ENTRY) {
                     if (current.length == 8) // digit limit
                         break;
-                    current = current + val;
+                    else if (current == "0") {
+                        current = val;
+                    }
+                    else {
+                        current = current + val;
+                    }
                 }
                 else if (calcState == calcStates.FUNCTION_PRESSED ||
-                    calcState == calcStates.INIT ||
                     calcState == calcStates.EQUALS_PRESSED) {
                     current = val;
                     calcState = calcStates.NUMBER_ENTRY;
