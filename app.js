@@ -7,7 +7,8 @@ var calc = (function() {
         INIT: "Init",
         EQUALS_PRESSED: "Equals Pressed",
         FUNCTION_PRESSED: "Function Pressed",
-        NUMBER_ENTRY: "Number Entry"
+        NUMBER_ENTRY: "Number Entry",
+        ERROR: "Error"
     };
 
     var calcState = calcStates.INIT; // start out in number entry mode
@@ -15,7 +16,12 @@ var calc = (function() {
 
     var handleButton = function(event) {
         var val = event.target.getAttribute("data-val");
-
+        
+        if (calcState == calcStates.ERROR) {
+            clearError();
+            calcState = calcStates.INIT;
+        }
+        
         switch (val) {
             case "=":
                 if (calcState == calcStates.EQUALS_PRESSED || 
@@ -98,9 +104,9 @@ var calc = (function() {
                 calcState = calcStates.NUMBER_ENTRY;
                 break;
             default:
-                if (current.length == 8) // digit limit
-                    break;
-                else if (calcState == calcStates.NUMBER_ENTRY) {
+                if (calcState == calcStates.NUMBER_ENTRY) {
+                    if (current.length == 8) // digit limit
+                        break;
                     current = current + val;
                 }
                 else if (calcState == calcStates.FUNCTION_PRESSED ||
@@ -111,6 +117,10 @@ var calc = (function() {
                 }
 
                 break;
+        }
+        
+        if (current.length > 8) {
+            digitLimitError();
         }
         
         renderTotal();
@@ -172,6 +182,23 @@ var calc = (function() {
         console.log("updating + " + historyDiv + " with " + history);
 
         historyDiv.innerHTML = history.join(' ');
+    }
+    
+    var digitLimitError = function() {
+        var error = document.getElementById('error');
+        
+        history = [];
+        current = 0;
+        
+        error.textContent = "DIGIT LIMIT REACHED";
+        
+        calcState = calcStates.ERROR;
+    }
+    
+    var clearError = function() {
+        var error = document.getElementById('error');
+        
+        error.textContent = "";
     }
 
     var init = function() {

@@ -26,23 +26,10 @@
     overflow: hidden;
 }
 
-#expression {
+#history {
     font-size: 10px;
     white-space: nowrap;
     overflow: hidden;
-}
-
-.char {
-    display: inline-block;
-}
-
-#total .char {
-    width: 27.5px;
-}
-
-#expression .char {
-    width: 11px;
-    text-align: center;
 }
 
 #error {
