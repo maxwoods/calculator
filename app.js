@@ -29,6 +29,28 @@ var calc = (function() {
             case "x":
             case "-":
             case "+":
+                if (calcState == calcStates.NUMBER_ENTRY_REG) {
+                        history.push(current);
+                        history.push(val);
+                        current = "";
+                    }
+                
+                else if (calcState == calcStates.NUMBER_ENTRY_DECIMAL) {
+                    if (current.slice(-1) == ".") {
+                        current = current + "0";
+                    }
+                    
+                    history.push(current);
+                    history.push(val);
+                }
+                
+                // Change operator if last button was a function
+                else if (calcState == calcStates.FUNCTION_PRESSED) {
+                    history.splice(-1, 1, val);
+                }
+                
+                calcState = calcStates.FUNCTION_PRESSED;
+                renderHistory();
                 break;
             case ".":
                 // Only one decimal point in current entry
@@ -49,10 +71,14 @@ var calc = (function() {
             default:
                 if (current.length == 8) // digit limit
                     break;
-                if (calcState == calcStates.NUMBER_ENTRY_REG ||
+                else if (calcState == calcStates.NUMBER_ENTRY_REG ||
                     calcState == calcStates.NUMBER_ENTRY_DECIMAL) {
                         current = current + val;
                     }
+                else if (calcState == calcStates.FUNCTION_PRESSED) {
+                    current = val;
+                    calcState = calcStates.NUMBER_ENTRY_REG;
+                }
                 
                 renderTotal();
                 break;
@@ -104,6 +130,19 @@ var calc = (function() {
       
       console.log("Updating with current: " + current);
     };
+    
+    var renderHistory = function() {
+        var historyDiv = document.getElementById("history");
+        
+        console.log("updating + " + historyDiv + " with " + history);
+        
+        historyDiv.innerHTML = history.join(' ');
+    }
+    
+    // Utility function to check if a given string is a number
+    var isNumber = function(string) {
+        return !isNaN(parseFloat(string));
+    }
 
     var init = function() {
         var buttons = document.getElementsByClassName('button');
