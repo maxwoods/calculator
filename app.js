@@ -1,7 +1,7 @@
 var calc = (function() {
     var history = []; // History of commands/values entered
     var current = ""; // Current value displayed on the screen
-    
+
     // pseudo-enumeration to represent various states of the calculator
     var calcStates = {
         EQUALS_PRESSED: "Equals Pressed",
@@ -9,13 +9,13 @@ var calc = (function() {
         NUMBER_ENTRY_REG: "Number Entry Regular",
         NUMBER_ENTRY_DECIMAL: "Number Entry Decimal"
     }
-    
-    var calcState = calcStates.NUMBER_ENTRY; // start out in number entry mode
-    
-    
+
+    var calcState = calcStates.NUMBER_ENTRY_REG; // start out in number entry mode
+
+
     var handleButton = function(event) {
         var val = event.target.getAttribute("data-val");
-        
+
         switch (val) {
             case "=":
                 break;
@@ -33,10 +33,17 @@ var calc = (function() {
             case ".":
                 break;
             default:
+                if (calcState == calcStates.NUMBER_ENTRY_REG ||
+                    calcState == calcStates.NUMBER_ENTRY_DECIMAL) {
+                        console.log("setting current");
+                        current = current + val;
+                    }
+                
+                renderTotal();
                 break;
         }
     };
-    
+
     var evaluate = function(expression) {
         return expression.map(function(elem) {
                 return parseFloat(elem) || elem;
@@ -58,11 +65,11 @@ var calc = (function() {
                                 result *= current;
                                 break;
                         }
-                        
+
                         //round to nearest hundredth 
-                        return Math.round(result*100)/100;
+                        return Math.round(result * 100) / 100;
                     }
-                    
+
                     else {
                         return current;
                     }
@@ -75,16 +82,26 @@ var calc = (function() {
             }, 0);
     };
     
+    var renderTotal = function() {
+      var totalDiv = document.getElementById("total");
+      
+      totalDiv.innerHTML = current;
+      
+      console.log("Updating with current: " + current);
+    };
+
     var init = function() {
         var buttons = document.getElementsByClassName('button');
-        
+
         for (var i = 0; i < buttons.length; i++) {
             buttons[i].addEventListener("click", handleButton);
         }
-    }
-    
-    return {
-      init: init  
     };
-    
+
+    return {
+        init: init
+    };
+
 })();
+
+calc.init();
