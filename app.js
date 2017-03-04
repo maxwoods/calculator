@@ -33,6 +33,16 @@ var calc = (function() {
                 renderTotal();
                 break;
             case "sign":
+                if (calcState == calcStates.NUMBER_ENTRY_REG || 
+                    calcState == calcStates.NUMBER_ENTRY_DECIMAL) {
+                        if (current[0] == "-") {
+                            current = current.slice(1);
+                        }
+                        else {
+                            current = "-" + current;
+                        }
+                    }
+                renderTotal();
                 break;
             case "/":
             case "x":
