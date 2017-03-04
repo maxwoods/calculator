@@ -47,7 +47,8 @@ var calc = (function() {
                 calcState = calcStates.FUNCTION_PRESSED;
                 break;
             case "sign":
-                if (calcState == calcStates.NUMBER_ENTRY) {
+                if (calcState == calcStates.NUMBER_ENTRY ||
+                    calcState == calcStates.EQUALS_PRESSED) {
                         if (current[0] == "-") {
                             current = current.slice(1);
                         }
