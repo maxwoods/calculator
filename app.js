@@ -18,6 +18,19 @@ var calc = (function() {
 
         switch (val) {
             case "=":
+                if (calcState == calcStates.EQUALS_PRESSED || 
+                    calcState == calcStates.FUNCTION_PRESSED) {
+                        break;
+                    }
+                
+                else {
+                    console.log("running this");
+                    history.push(current);
+                    current = evaluate(history).toString();
+                    history = [];
+                    
+                    calcState = calcStates.EQUALS_PRESSED;
+                }
                 break;
             case "AC":
                 history = [];
@@ -52,6 +65,13 @@ var calc = (function() {
 
                     current = evaluate(history.slice(0, -1)).toString();
                 }
+                
+                /* If expression was just totaled, use total as beginning of 
+                history for next expression */
+                else if (calcState == calcStates.EQUALS_PRESSED) {
+                    history = [current];
+                    history.push(val);
+                }
 
                 // Change operator if last button was a function
                 else if (calcState == calcStates.FUNCTION_PRESSED) {
@@ -84,7 +104,8 @@ var calc = (function() {
                     current = current + val;
                 }
                 else if (calcState == calcStates.FUNCTION_PRESSED ||
-                    calcState == calcStates.INIT) {
+                    calcState == calcStates.INIT ||
+                    calcState == calcStates.EQUALS_PRESSED) {
                     current = val;
                     calcState = calcStates.NUMBER_ENTRY;
                 }
