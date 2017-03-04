@@ -69,7 +69,6 @@ var calc = (function() {
                 // If no number entered, assume "0.0"
                 else if (calcState == calcStates.FUNCTION_PRESSED) {
                     current = "0.";
-                    console.log("HERE");
                 }
                 
                 else {
@@ -98,8 +97,10 @@ var calc = (function() {
     };
 
     var evaluate = function(expression) {
+        console.log("evaluating " + expression);
         return expression.map(function(elem) {
-                return parseFloat(elem) || elem;
+                var parsed = parseFloat(elem);
+                return isNaN(parsed) ? elem : parsed;
             })
             .reduce(function(result, current, idx, arr) {
                 if (!isNaN(current)) {
@@ -118,7 +119,8 @@ var calc = (function() {
                                 result *= current;
                                 break;
                         }
-
+                        
+                        console.log("result is " + result);
                         //round to nearest hundredth 
                         return Math.round(result * 100) / 100;
                     }
