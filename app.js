@@ -1,5 +1,6 @@
 var calc = (function() {
-    var history = []; // History of commands/values entered
+    // Array of strings representing history of operators/numbers entered
+    var history = [];
     var current = "0"; // Current value displayed on the screen
 
     // pseudo-enumeration to represent various states of the calculator
@@ -130,6 +131,9 @@ var calc = (function() {
         renderHistory();
     };
 
+    /* Accepts an array of strings representing a math
+    expression and returns the result. This implementation ignores
+    order of operations */
     var evaluate = function(expression) {
         console.log("evaluating " + expression);
         return expression.map(function(elem) {
