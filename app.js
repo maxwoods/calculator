@@ -31,6 +31,20 @@ var calc = (function() {
             case "+":
                 break;
             case ".":
+                // Only one decimal point in current entry
+                if (calcState == calcStates.NUMBER_ENTRY_DECIMAL)
+                    break;
+                // If no number entered, assume "0.0"
+                else if (current.length == 0) {
+                    calcState = calcStates.NUMBER_ENTRY_DECIMAL;
+                    current = "0.";
+                }
+                else {
+                    calcState = calcStates.NUMBER_ENTRY_DECIMAL;
+                    current = current + ".";
+                }
+                
+                renderTotal();
                 break;
             default:
                 if (current.length == 8) // digit limit
